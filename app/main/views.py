@@ -57,6 +57,21 @@ def index():
     return render_template('index.html', form=form, posts=posts,
                            show_followed=show_followed, pagination=pagination)
 
+@main.route('/add-post', methods=['GET', 'POST'])
+def add_post():
+    form = PostForm()
+    if current_user.can(Permission.WRITE_ARTICLES) and \
+            form.validate_on_submit():
+        post = Post(
+                    title=form.title.data,
+                    body=form.body.data,
+                    author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('.index'))
+    
+    return render_template('add_post.html', form=form)
+
 
 @main.route('/user/<username>')
 def user(username):
@@ -121,7 +136,8 @@ def post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(body=form.body.data,
+        comment = Comment(
+                          body=form.body.data,
                           post=post,
                           author=current_user._get_current_object())
         db.session.add(comment)
@@ -149,11 +165,13 @@ def edit(id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
+        post.title=form.title.data
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('The post has been updated.')
         return redirect(url_for('.post', id=post.id))
+    title=form.title.data
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
 
