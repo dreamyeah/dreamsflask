@@ -1,5 +1,11 @@
 .profile-thumbnail {
     position: absolute;
+    top: 20px;
+}
+
+.modify-header {
+    position: absolute;
+    top: 230px;
 }
 .profile-header {
     min-height: 260px;
