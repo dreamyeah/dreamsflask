@@ -165,13 +165,13 @@ def edit(id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
-        post.title=form.title.data
+        post.title = form.title.data
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('The post has been updated.')
         return redirect(url_for('.post', id=post.id))
-    title=form.title.data
+    form.title.data = post.title
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
 
