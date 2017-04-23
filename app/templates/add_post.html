@@ -1,15 +1,19 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}DreamBlog - Edit Post{% endblock %}
+{% block title %}DreamBlog - Add Post{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Edit Post</h1>
+    <h1>Add Post</h1>
 </div>
+
 <div>
+    {% if current_user.can(Permission.WRITE_ARTICLES) %}
     {{ wtf.quick_form(form) }}
+    {% endif %}
 </div>
+
 {% endblock %}
 
 {% block scripts %}

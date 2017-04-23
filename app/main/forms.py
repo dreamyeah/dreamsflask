@@ -51,6 +51,7 @@ class EditProfileAdminForm(Form):
 
 
 class PostForm(Form):
+    title = StringField('Title', validators=[Required(),Length(0, 64)])
     body = PageDownField("What's on your mind?", validators=[Required()])
     submit = SubmitField('Submit')
 
