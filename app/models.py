@@ -320,10 +320,15 @@ class Post(db.Model):
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-                        'h1', 'h2', 'h3', 'p','img','alt','title']
+                        'h1', 'h2', 'h3', 'p', 'img',]
+        attrs = {
+                    '*': ['class'],
+                    'a': ['href', 'rel'],
+                    'img': ['src', 'alt', 'title'],
+                }
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
-            tags=allowed_tags, strip=True))
+            tags=allowed_tags,attributes=attrs, strip=True))
 
     def to_json(self):
         json_post = {
@@ -364,6 +369,7 @@ class Comment(db.Model):
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i',
                         'strong']
+
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
