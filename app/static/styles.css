@@ -308,3 +308,10 @@ div.flask-pagedown-preview h3 {
 }
 
 .nounderline{text-decoration: none}
+
+.post-hidden-line{
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 4;
+overflow: hidden;
+}

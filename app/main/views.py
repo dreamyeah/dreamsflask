@@ -44,6 +44,7 @@ def index():
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     show_followed = False
+    post_hidden = True
     if current_user.is_authenticated:
         show_followed = bool(request.cookies.get('show_followed', ''))
     if show_followed:
@@ -55,7 +56,7 @@ def index():
         error_out=False)
     posts = pagination.items
     return render_template('index.html', form=form, posts=posts,
-                           show_followed=show_followed, pagination=pagination)
+                           show_followed=show_followed, post_hidden = post_hidden, pagination=pagination)
 
 @main.route('/add-post', methods=['GET', 'POST'])
 def add_post():
@@ -77,11 +78,12 @@ def add_post():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
+    post_hidden = True
     pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    return render_template('user.html', user=user, posts=posts,
+    return render_template('user.html', user=user, posts=posts, post_hidden=post_hidden,
                            pagination=pagination)
 
 
@@ -144,6 +146,7 @@ def post(id):
         db.session.commit()
         flash('Your comment has been published.')
         return redirect(url_for('.post', id=post.id, page=-1))
+    post_hidden = False
     page = request.args.get('page', 1, type=int)
     if page == -1:
         page = (post.comments.count() - 1) // \
@@ -153,7 +156,7 @@ def post(id):
         error_out=False)
     comments = pagination.items
     return render_template('post.html', posts=[post], form=form,
-                           comments=comments, pagination=pagination)
+                           comments=comments,post_hidden=post_hidden, pagination=pagination)
 
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])

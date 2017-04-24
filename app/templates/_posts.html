@@ -20,12 +20,20 @@
                 </a>
             </div>
             <div class="posted">
+            
                 {% if post.body_html %}
-                    {{ post.body_html | safe }}
+                    {% if post_hidden %}
+                    <div class="post-hidden-line">
+                        {{ post.body_html | replace("<pre>", "")|replace("</pre>", "") | replace("<p>", "")|replace("</p>", "") | safe }}
+                    </div>
+                    {% else %}
+                        {{ post.body_html | safe }}
+                    {% endif %}
                 {% else %}
                     {{ post.body }}
                 {% endif %}
-            </div>
+                
+            
             </div>
             <div class="post-footer">
                 {% if current_user == post.author %}
