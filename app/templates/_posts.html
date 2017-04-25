@@ -23,8 +23,11 @@
             
                 {% if post.body_html %} 
                     {% if post_hidden %}
-                    <div class="post-hidden-line">
+                  <!--   <div class="post-hidden-line">
                         {{ post.body_html | replace("<pre>", "")|replace("</pre>", "") | replace("<p>", "")|replace("</p>", "") |replace("<h1>", "")|replace("</h1>", "")|replace("<h2>", "")|replace("</h2>", "")|replace("<h3>", "")|replace("</h3>", "")|replace("<blockquote>", "")|replace("</blockquote>", "")| safe }}
+                    </div> -->
+                    <div class="post-hidden-line">
+                        {{ post.body_html |striptags|title }}
                     </div>
                     {% else %}
                         {{ post.body_html | safe }}
