@@ -18,6 +18,12 @@
                 <a href="{{ url_for('.user', username=post.author.username) }}" style="text-decoration: none">
                     <span class="label label-primary">{{ post.author.username }}</span>
                 </a>
+                under
+                {% for cat in post.categories.all() %}
+                <a href="{{ url_for('.user', username=post.author.username) }}" style="text-decoration: none">
+                    <span class="label label-primary">{{cat.name}}</span>
+                </a>
+                {% endfor %}
             </div>
             <div class="posted">
             

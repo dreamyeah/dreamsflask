@@ -291,6 +291,21 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+
+registrations = db.Table('registrations',
+
+    db.Column('post_id', db.Integer, db.ForeignKey('posts.id')),
+    db.Column('category_id', db.Integer, db.ForeignKey('categories.id'))
+
+    )
+
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -300,7 +315,9 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
-
+    categories = db.relationship('Category', secondary=registrations,
+        backref=db.backref('posts', lazy='dynamic'),
+        lazy='dynamic')
     @staticmethod
     def generate_fake(count=100):
         from random import seed, randint
@@ -395,3 +412,7 @@ class Comment(db.Model):
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+
+
+

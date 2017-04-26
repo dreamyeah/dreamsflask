@@ -4,9 +4,9 @@ from flask_login import login_required, current_user
 from flask_sqlalchemy import get_debug_queries
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
-    CommentForm
+    CommentForm, CategoryForm
 from .. import db
-from ..models import Permission, Role, User, Post, Comment
+from ..models import Permission, Role, User, Post, Comment, Category
 from ..decorators import admin_required, permission_required
 
 
@@ -34,14 +34,14 @@ def server_shutdown():
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = PostForm()
-    if current_user.can(Permission.WRITE_ARTICLES) and \
-            form.validate_on_submit():
-        post = Post(body=form.body.data,
-                    author=current_user._get_current_object())
-        db.session.add(post)
-        db.session.commit()
-        return redirect(url_for('.index'))
+    # form = PostForm()
+    # if current_user.can(Permission.WRITE_ARTICLES) and \
+    #         form.validate_on_submit():
+    #     post = Post(body=form.body.data,
+    #                 author=current_user._get_current_object())
+    #     db.session.add(post)
+    #     db.session.commit()
+    #     return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     show_followed = False
     post_hidden = True
@@ -55,7 +55,9 @@ def index():
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    return render_template('index.html', form=form, posts=posts,
+
+    # categories = Category.query.
+    return render_template('index.html',  posts=posts,
                            show_followed=show_followed, post_hidden = post_hidden, pagination=pagination)
 
 @main.route('/add-post', methods=['GET', 'POST'])
@@ -67,6 +69,8 @@ def add_post():
                     title=form.title.data,
                     body=form.body.data,
                     author=current_user._get_current_object())
+        for category in form.categories.data:
+            post.categories.append(Category.query.get(category))
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('.index'))
@@ -170,12 +174,17 @@ def edit(id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.body = form.body.data
+        for category in post.categories.all():
+            post.categories.remove(category)
+        for category in form.categories.data:
+            post.categories.append(Category.query.get(category))
         db.session.add(post)
         db.session.commit()
         flash('The post has been updated.')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
     form.body.data = post.body
+    form.categories.data = [category.id for category in post.categories.all()]
     return render_template('edit_post.html', form=form)
 
 
@@ -296,3 +305,21 @@ def moderate_disable(id):
     db.session.commit()
     return redirect(url_for('.moderate',
                             page=request.args.get('page', 1, type=int)))
+
+
+
+@main.route('/add_categories', methods=['POST','GET'])
+@login_required
+@permission_required(Permission.ADMINISTER)
+def add_categories():
+    form = CategoryForm()
+    if current_user.can(Permission.ADMINISTER) and \
+            form.validate_on_submit():
+        category = Category(
+                    name=form.name.data
+                    )
+        db.session.add(category)
+        db.session.commit()
+        return redirect(url_for('.add_categories'))
+    categories = Category.query.order_by(Category.name)
+    return render_template('category.html', form=form, categories=categories)
