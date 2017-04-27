@@ -52,7 +52,7 @@ class EditProfileAdminForm(Form):
 
 class PostForm(Form):
     title = StringField('Title', validators=[Required(),Length(0, 64)])
-    body = PageDownField("What's on your mind?", validators=[Required()])
+    body = PageDownField("What's on your mind?", validators=[Required()], render_kw={'rows':20})
     categories = SelectMultipleField("Select categories",validators=[Required()],coerce=int)
     submit = SubmitField('Submit')
 
