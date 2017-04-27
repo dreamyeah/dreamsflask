@@ -5,7 +5,7 @@
 {% block title %}DreamBlog{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
+<div class="alert alert-info-head">
     <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
 </div>
 
