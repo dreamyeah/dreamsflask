@@ -31,7 +31,7 @@ div.post-tabs ul.posts {
     border-top: none;
 }
 ul.posts li.post {
-    padding: 8px;
+    /*padding: 8px;*/
     border-bottom: 1px solid #e0e0e0;
 }
 ul.posts li.post:hover {
