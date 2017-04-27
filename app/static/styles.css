@@ -52,6 +52,7 @@ div.post-content {
 }
 div.post-footer {
     text-align: right;
+    padding-top: 15px;
 }
 
 .page-header-new {
