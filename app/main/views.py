@@ -323,3 +323,21 @@ def add_categories():
         return redirect(url_for('.add_categories'))
     categories = Category.query.order_by(Category.name)
     return render_template('category.html', form=form, categories=categories)
+
+
+
+@main.route('/posts/category/<categoryname>')
+def category_posts(categoryname):
+    category = Category.query.filter_by(name=categoryname).first()
+    if category is None:
+        flash('Invalid category.')
+        return redirect(url_for('.index'))
+    page = request.args.get('page', 1, type=int)
+    query = Post.query
+    pagination = category.posts.paginate(
+        page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+
+    return render_template('category_posts.html', categoryname=categoryname, posts=posts,
+                          pagination=pagination, size=category.posts.all())

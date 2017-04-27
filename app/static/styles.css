@@ -47,7 +47,7 @@ div.post-thumbnail {
     position: absolute;
 }
 div.post-content {
-    margin-left: 48px;
+/*    margin-left: 48px;*/
     min-height: 48px;
 }
 div.post-footer {
@@ -314,4 +314,17 @@ display: -webkit-box;
 -webkit-box-orient: vertical;
 -webkit-line-clamp: 4;
 overflow: hidden;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
