@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-<!-- {% import "_macros.html" as macros %} -->
+
+{% import "_macros.html" as macros %}
 
 {% block title %}DreamBlog - Posts under {{ categoryname }}{% endblock %}
 
 {% block page_content %}
-<!-- <div class="page-header">
-    <h1>Total {{size | length}} Posts Under {{ categoryname }} </h1>
-</div> -->
+
 <div class="alert alert-info">
     <strong>Category: {{ categoryname }} </strong>
 </div>
@@ -15,7 +14,7 @@
 </div>
 {% if pagination %}
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, '.index') }}
+    {{ macros.pagination_widget(pagination, '.category_posts',categoryname=categoryname) }}
 </div>
 {% endif %}
 {% endblock %}

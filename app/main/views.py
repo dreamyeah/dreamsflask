@@ -338,6 +338,6 @@ def category_posts(categoryname):
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-
+    post_hidden = True
     return render_template('category_posts.html', categoryname=categoryname, posts=posts,
-                          pagination=pagination, size=category.posts.all())
+                          pagination=pagination, size=category.posts.all(), post_hidden=post_hidden)
