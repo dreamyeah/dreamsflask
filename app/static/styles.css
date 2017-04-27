@@ -248,7 +248,7 @@ div.flask-pagedown-preview h3 {
     float: right;
     display: inline;
     position: relative;
-    top: 4px;
+/*    top: 4px;*/
 }
 #main .post {
     margin-bottom: 20px;
