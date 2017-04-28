@@ -57,9 +57,8 @@ def index():
         error_out=False)
     posts = pagination.items
 
-    categories = Category.query.order_by(Category.name).all()
     return render_template('index.html',  posts=posts,
-                           show_followed=show_followed, post_hidden = post_hidden, pagination=pagination, categories=categories)
+                           show_followed=show_followed, post_hidden = post_hidden, pagination=pagination)
 
 @main.route('/add-post', methods=['GET', 'POST'])
 def add_post():
