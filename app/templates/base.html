@@ -81,14 +81,17 @@
                     <p>Welcome to my DreamBlog!</p>
                     <p>To do</p>
                     <h1>Categories</h1>
-                    {% for category in categories%}
+                        <div id="sideCategories">
+                            
+                        </div>   
+                    <!-- {% for category in categories%}
                         <p>
                         <a href="{{ url_for('.category_posts', categoryname=category.name) }}" style="text-decoration: none">
                             <span class="label label-primary">{{category.name}}</span>
                         </a>[{{category.posts.all() | length}}]
                         
                         </p>
-                    {% endfor %}
+                    {% endfor %} -->
 
         </div>
     </div>
@@ -99,4 +102,21 @@
 {% block scripts %}
 {{ super() }}
 {{ moment.include_moment() }}
+<script src="{{ url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
+<script>
+$(function() {
+        var category = '';
+        $.get('/get_categories', function(data) {
+
+            $.each(data, function(key, value) {
+                var url = "/posts/category/";
+                var categoryname = encodeURIComponent(key);
+                url += categoryname;
+                category += '<p><a href="'+url+'" style="text-decoration: none"><span class="label label-primary">'+key+'</span></a>['+value+']</p>'
+            })
+          $('#sideCategories').html(category);   
+    })
+
+})
+</script>
 {% endblock %}

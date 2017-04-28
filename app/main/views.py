@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, abort, flash, request,\
-    current_app, make_response
+    current_app, make_response, jsonify
 from flask_login import login_required, current_user
 from flask_sqlalchemy import get_debug_queries
 from . import main
@@ -8,6 +8,7 @@ from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
 from .. import db
 from ..models import Permission, Role, User, Post, Comment, Category
 from ..decorators import admin_required, permission_required
+import json
 
 
 @main.after_app_request
@@ -340,4 +341,11 @@ def category_posts(categoryname):
     posts = pagination.items
     post_hidden = True
     return render_template('category_posts.html', categoryname=categoryname, posts=posts,
-                          pagination=pagination, size=category.posts.all(), post_hidden=post_hidden)
+                          pagination=pagination,  post_hidden=post_hidden)
+
+@main.route('/get_categories', methods=['GET'])
+def get_categories():
+    # categories = Category.query.order_by(Category.name).all()
+    categories = {category.name:len(category.posts.all())
+                              for category in Category.query.order_by(Category.name).all()}
+    return jsonify(categories)
