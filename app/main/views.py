@@ -326,7 +326,7 @@ def add_categories():
 
 
 
-@main.route('/posts/category/<categoryname>')
+@main.route('/posts/category/<path:categoryname>')
 def category_posts(categoryname):
     category = Category.query.filter_by(name=categoryname).first()
     if category is None:

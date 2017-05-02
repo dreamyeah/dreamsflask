@@ -18,12 +18,14 @@
     <h1>Already Added Categories</h1>
 </div>
 <div>
-
+ <form action="" method=post>
     {% for category in categories %}
         <p style="text-decoration: none">
             <span class="label label-primary">{{category.name}}</span>
         </p>
     {% endfor %}
+      <input type=submit value="Update categories">
+  </form>
 </div>
 
 {% endblock %}
