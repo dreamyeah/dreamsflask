@@ -61,6 +61,7 @@ def index():
                            show_followed=show_followed, post_hidden = post_hidden, pagination=pagination)
 
 @main.route('/add-post', methods=['GET', 'POST'])
+@login_required()
 def add_post():
     form = PostForm()
     if current_user.can(Permission.WRITE_ARTICLES) and \
