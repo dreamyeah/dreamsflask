@@ -1,15 +1,7 @@
-{% extends "bootstrap/base.html" %}
-
-{% block title %}DreamBlog{% endblock %}
-
-{% block head %}
-{{ super() }}
+{% extends "bootstrap/base.html" %} {% block title %}DreamBlog{% endblock %} {% block head %} {{ super() }}
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-{% endblock %}
-
-{% block navbar %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> {% endblock %} {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">
@@ -31,12 +23,10 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.can(Permission.MODERATE_COMMENTS) %}
                 <li><a href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>
-                {% endif %}
-                {% if current_user.is_authenticated %}
+                {% endif %} {% if current_user.is_authenticated %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ current_user.gravatar(size=18) }}">
-                        {{current_user.username}} <b class="caret"></b>
+                        <img src="{{ current_user.gravatar(size=18) }}"> {{current_user.username}} <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
@@ -48,65 +38,62 @@
                     </ul>
                 </li>
                 {% else %}
-                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                <li><a  href="{{ url_for('auth.login') }}"></a></li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block content %}
-
+{% endblock %} {% block content %}
 <div class="container">
     <div class="row">
-    <div class="col-md-8">
-    <div id="main">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
-    </div>
-    {% endfor %}
-
-    {% block page_content %}{% endblock %}
-    </div>
-    </div>
-    <div class="col-md-4 sidebar-bg">
-        <div id="sidebar">
-                  
-                    <h1>Flask Web Development</h1>
-                    <p>To do</p>
-                    <h1>About This Blog</h1>
-                    <p>Welcome to my DreamBlog!</p>
-                    <p>To do</p>
-                    <h1>Categories</h1>
-                        <div id="sideCategories">
-                            
-                        </div>   
-
+        <div class="col-md-8">
+            <div id="main">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %} {% block page_content %}{% endblock %}
+            </div>
+        </div>
+        <div class="col-md-4 sidebar-bg">
+            <div id="sidebar">
+                <h1>About This Blog</h1>
+                <div>
+                    <p>Welcome to my blog! </p>
+                    {% if current_user.is_authenticated %}
+                    <center>
+                        <img class="img-rounded" src="{{ current_user.gravatar(size=200) }}">
+                    </center>
+                    {% endif %}
+                    <p>I'm a software engineer.</p> 
+                    <p>Interested in programming, especially Java Python Flask.</p>
+                    <p>You can also find me on Facebook, Google+, LinkedIn, Github and Twitter.</p>
+                    <p>Thank you for visiting!</p>
+                    
+                </div>
+                <h1>Categories</h1>
+                <div id="sideCategories">
+                </div>
+            </div>
         </div>
     </div>
-    </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
-{{ moment.include_moment() }}
+{% endblock %} {% block scripts %} {{ super() }} {{ moment.include_moment() }}
 <script src="{{ url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
 <script>
 $(function() {
-        var category = '';
-        $.get('/get_categories', function(data) {
+    var category = '';
+    $.get('/get_categories', function(data) {
 
-            $.each(data, function(key, value) {
-                var url = "/posts/category/";
-                var categoryname = encodeURIComponent(key);
-                url += categoryname;
-                category += '<p><a href="'+url+'" style="text-decoration: none"><span class="label label-primary">'+key+'</span></a>['+value+']</p>'
-            })
-          $('#sideCategories').html(category);   
+        $.each(data, function(key, value) {
+            var url = "/posts/category/";
+            var categoryname = encodeURIComponent(key);
+            url += categoryname;
+            category += '<p><a href="' + url + '" style="text-decoration: none"><span class="label label-primary">' + key + '</span></a>[' + value + ']</p>'
+        })
+        $('#sideCategories').html(category);
     })
 
 })
