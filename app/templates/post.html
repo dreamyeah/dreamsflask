@@ -7,10 +7,14 @@
 {% block page_content %}
 {% include '_posts.html' %}
 <h4 id="comments">Comments</h4>
-{% if current_user.can(Permission.COMMENT) %}
-<div class="comment-form">
-    {{ wtf.quick_form(form) }}
-</div>
+{% if current_user.is_authenticated %}
+    {% if current_user.can(Permission.COMMENT) %}
+    <div class="comment-form">
+        {{ wtf.quick_form(form) }}
+    </div>
+    {% endif %}
+{% else %}
+<a class="btn btn-default" href="{{ url_for('auth.login') }}">Login comment</a>
 {% endif %}
 {% include '_comments.html' %}
 {% if pagination %}
