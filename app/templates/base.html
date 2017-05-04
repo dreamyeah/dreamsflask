@@ -32,9 +32,6 @@
                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
                         <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>
                         <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                        {% if current_user.can(Permission.WRITE_ARTICLES) %}
-                        <li><a href="{{ url_for('main.add_post') }}">Add Post</a></li>
-                        {% endif %}
                     </ul>
                 </li>
                 {% else %}
