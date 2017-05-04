@@ -30,8 +30,7 @@ class Role(db.Model):
     def insert_roles():
         roles = {
             'User': (Permission.FOLLOW |
-                     Permission.COMMENT |
-                     Permission.WRITE_ARTICLES, True),
+                     Permission.COMMENT, True),
             'Moderator': (Permission.FOLLOW |
                           Permission.COMMENT |
                           Permission.WRITE_ARTICLES |

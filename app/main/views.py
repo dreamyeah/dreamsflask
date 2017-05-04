@@ -349,3 +349,7 @@ def get_categories():
     categories = {category.name:len(category.posts.all())
                               for category in Category.query.order_by(Category.name).all()}
     return jsonify(categories)
+
+@main.route('/sponsor', methods=['GET'])
+def sponsor():
+    return render_template('sponsor.html')
