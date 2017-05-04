@@ -65,7 +65,7 @@ class ProductionConfig(Config):
             subject=cls.FLASKY_MAIL_SUBJECT_PREFIX + ' Application Error',
             credentials=credentials,
             secure=secure)
-        mail_handler.setLevel(logging.WARNING)
+        mail_handler.setLevel(logging.INFO)
         app.logger.addHandler(mail_handler)
 
 
