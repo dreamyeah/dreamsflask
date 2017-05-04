@@ -7,16 +7,21 @@
 {% block page_content %}
 {% include '_posts.html' %}
 <h4 id="comments">Comments</h4>
-{% if current_user.is_authenticated %}
-    {% if current_user.can(Permission.COMMENT) %}
+{% if current_user.can(Permission.COMMENT) %}
     <div class="comment-form">
         {{ wtf.quick_form(form) }}
     </div>
-    {% endif %}
-{% else %}
-<a class="btn btn-default" href="{{ url_for('auth.login') }}">Login comment</a>
 {% endif %}
+
 {% include '_comments.html' %}
+
+{% if not current_user.is_authenticated %}
+
+<a href="{{ url_for('auth.login') }}" style="text-decoration: none">
+    <span class="label label-primary">Log in to make comment</span>
+</a>
+{% endif %}
+
 {% if pagination %}
 <div class="pagination">
     {{ macros.pagination_widget(pagination, '.post', fragment='#comments', id=posts[0].id) }}
