@@ -25,9 +25,15 @@
                 <li><a href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>
                 {% endif %} {% if current_user.is_authenticated %}
                 <li class="dropdown">
+                    {% if current_user.header_url %}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{{ current_user.header_url }}" width="18"> {{current_user.username}} <b class="caret"></b>
+                    </a>
+                    {% else %}
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ current_user.gravatar(size=18) }}"> {{current_user.username}} <b class="caret"></b>
                     </a>
+                    {% endif %}
                     <ul class="dropdown-menu">
                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
                         <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>

@@ -4,6 +4,7 @@
 {% block title %}DreamBlog - Add Category{% endblock %}
 
 {% block page_content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
 <div class="alert alert-info-head">
     <h1>Add Category</h1>
 </div>
@@ -26,5 +27,17 @@
     {% endfor %}
 
 </div>
+<div>
 
+<!-- <input id="foo" value="https://github.com/zenorocha/clipboard.js.git">
+
+
+<button class="btn" data-clipboard-target="#foo">
+    <img src="{{ url_for('static', filename='images/clippy.svg') }}" alt="Copy to clipboard">
+</button>
+</div> -->
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/clipboard.min.js') }}"></script>
 {% endblock %}

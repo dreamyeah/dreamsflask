@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky - Google{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Google Demo</h1>
+</div>
+<h1>Congratulations, you have obtained an OAuth 2 token!</h1>
+<h2>What would you like to do next?</h2>
+     <ul>
+         <li><a href="{{url_for('google.profile')}}" target="_blank"> Get account profile</a></li>
+         <li><a href="{{url_for('google.automatic_refresh')}}" target="_blank"> Implicitly refresh the token</a></li>
+         <li><a href="{{url_for('google.manual_refresh')}}" target="_blank"> Explicitly refresh the token</a></li>
+         <li><a href="{{url_for('google.validate')}}" target="_blank"> Validate the token</a></li>
+     </ul>
+<pre>
+{{oauth_token}}
+</pre>
+{% endblock %}

@@ -10,7 +10,6 @@ from ..models import Permission, Role, User, Post, Comment, Category
 from ..decorators import admin_required, permission_required
 import json
 
-
 @main.after_app_request
 def after_request(response):
     for query in get_debug_queries():
