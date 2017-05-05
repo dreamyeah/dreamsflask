@@ -80,7 +80,7 @@ def profile():
     """
     print session['oauth_token']
     google = OAuth2Session(client_id, token=session['oauth_token'])
-    print 'session['oauth_token']'
+    print "session['oauth_token']"
     userinfo = google.get('https://www.googleapis.com/oauth2/v1/userinfo').json()
     print userinfo
     email = userinfo['email']
