@@ -46,6 +46,8 @@ def demo():
 
     # State is used to prevent CSRF, keep this for later.
     session['oauth_state'] = state
+    print "state:"
+    print state
     return redirect(authorization_url)
 
 
@@ -67,7 +69,9 @@ def callback():
     # We use the session as a simple DB for this example.
     session['oauth_token'] = token
 
-    return redirect(url_for('.profile'))
+    print "token"
+    print  token
+    return redirect(url_for('google.profile'))
 
 @google.route("/profile", methods=["GET"])
 def profile():
