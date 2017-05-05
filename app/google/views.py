@@ -48,6 +48,7 @@ def demo():
     session['oauth_state'] = state
     print "state:"
     print state
+    print session['oauth_state']
     return redirect(authorization_url)
 
 
