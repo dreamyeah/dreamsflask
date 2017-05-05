@@ -62,9 +62,9 @@ def callback():
     in the redirect URL. We will use that to obtain an access token.
     """
 
-    google = OAuth2Session(client_id, redirect_uri=redirect_uri,
+    g = OAuth2Session(client_id, redirect_uri=redirect_uri,
                            state=session['oauth_state'])
-    token = google.fetch_token(token_url, client_secret=client_secret,
+    token = g.fetch_token(token_url, client_secret=client_secret,
                                authorization_response=request.url)
 
     # We use the session as a simple DB for this example.
@@ -72,7 +72,28 @@ def callback():
 
     print "token"
     print  token
-    return redirect(url_for('google.profile'))
+    gg = OAuth2Session(client_id, token=session['oauth_token'])
+    print "session['oauth_token']"
+    userinfo = gg.get('https://www.googleapis.com/oauth2/v1/userinfo').json()
+    print userinfo
+    email = userinfo['email']
+    username = userinfo['name']
+    header_url = userinfo['picture']
+    user = User.query.filter_by(email=email).first()
+    if user is not None:
+        flash('You have been logged in.')
+        login_user(user, True)
+        return redirect(request.args.get('next') or url_for('main.index'))
+    else:
+        user = User(email=email,
+                    username=username,
+                    confirmed = True,
+                    header_url = header_url
+                    )
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return redirect(request.args.get('next') or url_for('main.index'))
 
 @google.route("/profile", methods=["GET"])
 def profile():
