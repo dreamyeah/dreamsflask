@@ -46,9 +46,6 @@ def demo():
 
     # State is used to prevent CSRF, keep this for later.
     session['oauth_state'] = state
-    print "state:"
-    print state
-    print session['oauth_state']
     return redirect(authorization_url)
 
 
@@ -62,46 +59,21 @@ def callback():
     in the redirect URL. We will use that to obtain an access token.
     """
 
-    g = OAuth2Session(client_id, redirect_uri=redirect_uri,
+    google = OAuth2Session(client_id, redirect_uri=redirect_uri,
                            state=session['oauth_state'])
-    token = g.fetch_token(token_url, client_secret=client_secret,
+    token = google.fetch_token(token_url, client_secret=client_secret,
                                authorization_response=request.url)
 
     # We use the session as a simple DB for this example.
     session['oauth_token'] = token
 
-    print "token"
-    print  token
-    gg = OAuth2Session(client_id, token=session['oauth_token'])
-    print "session['oauth_token']"
-    userinfo = gg.get('https://www.googleapis.com/oauth2/v1/userinfo').json()
-    print userinfo
-    email = userinfo['email']
-    username = userinfo['name']
-    header_url = userinfo['picture']
-    user = User.query.filter_by(email=email).first()
-    if user is not None:
-        flash('You have been logged in.')
-        login_user(user, True)
-        return redirect(request.args.get('next') or url_for('main.index'))
-    else:
-        user = User(email=email,
-                    username=username,
-                    confirmed = True,
-                    header_url = header_url
-                    )
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        return redirect(request.args.get('next') or url_for('main.index'))
+    return redirect(url_for('.profile'))
 
 @google.route("/profile", methods=["GET"])
 def profile():
     """Fetching a protected resource using an OAuth 2 token.
     """
-    print session['oauth_token']
     google = OAuth2Session(client_id, token=session['oauth_token'])
-    print "session['oauth_token']"
     userinfo = google.get('https://www.googleapis.com/oauth2/v1/userinfo').json()
     print userinfo
     email = userinfo['email']
